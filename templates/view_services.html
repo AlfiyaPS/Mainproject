@@ -1,0 +1,147 @@
+{% extends 'guide_dashboard.html' %}
+{% load static %}
+{% block title %}View Services{% endblock %}
+{% block page_content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        body.view-services-page {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            {% comment %} background-image: url('{% static "/img/service.jpeg" %}'); {% endcomment %}
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat; /* Prevent image from repeating */
+            background-color: #c4e6b6;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            backdrop-filter: blur(1px);
+        }
+    
+        h1.view-services-page {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    
+        .service-card {
+            display: flex;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            padding: 10px;
+            align-items: center;
+            max-width: 800px; /* Adjust the maximum width as needed */
+        }
+    
+        .service-details {
+            flex: 1;
+            margin-left: 10px;
+        }
+    
+        strong.view-services-page {
+            display: block;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+    
+        p.view-services-page {
+            margin: 5px 0; /* Adjust margin as needed */
+        }
+    
+        img.view-services-page {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            max-height: 200px;
+        }
+    
+        .view-more-button {
+            display: inline-block;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            background-color: #50C878;
+            color: #fff;
+            border: 1px solid #50C878;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .view-more-button:hover {
+            background-color: #228B22;
+            border: 1px solid #228B22;
+        }
+        .delete-button {
+            display: inline-block;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            background-color: #dc3545;
+            color: #fff;
+            border: 1px solid #dc3545;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .delete-button:hover {
+            background-color: #c82333;
+            border: 1px solid #c82333;}
+    </style>
+    <title>View Services</title>
+</head><center>
+    <body class="view-services-page">
+        <h1 class="view-services-page">View Services</h1>
+        {% for service in services %}
+            <div class="service-card">
+                {% if service.images %}
+                    <img class="view-services-page" src="{{ service.images.url }}" alt="Service Image">
+                {% endif %}
+                <div class="service-details">
+                    <strong class="view-services-page">{{ service.service_name }}</strong>
+                    <p class="view-service-page">Place: {{ service.place }}</p>
+                    <p class="view-service-page">City: {{ service.city }}</p>
+                    <p class="view-service-page">State: {{ service.state }}</p>
+                    <!-- Display the rating using stars -->
+                    <p><strong>Average Rating:</strong>
+                        {% if average_rating %}
+                            <span class="star-rating">
+                                {% for i in "12345" %}
+                                    {% if i <= average_rating %}
+                                        <span>&#9733;</span> <!-- Filled star -->
+                                    {% else %}
+                                        <span>&#9734;</span> <!-- Empty star -->
+                                    {% endif %}
+                                {% endfor %}
+                            </span>
+                            ({{ average_rating }}) <!-- Display numeric rating beside stars -->
+                        {% else %}
+                            No ratings yet
+                        {% endif %}
+                    </p>
+                    <button onclick="window.location.href='{% url 'service_details' service.service_id %}'" class="view-more-button">View More Details</button>
+                    <button onclick="confirmDelete('{{ service.service_id }}')" class="delete-button">Delete Service</button>
+                </div>
+            </div>
+        {% endfor %}
+        <script>
+            function confirmDelete(serviceId) {
+                if (confirm('Are you sure you want to delete this service?')) {
+                    // Perform the deletion action, either through AJAX or by redirecting to a delete view
+                    window.location.href = '{% url 'delete_service' %}?service_id=' + serviceId;
+                }
+            }
+        </script>
+    </body>
+    </center>
+    </html>
+    {% endblock %}
+    

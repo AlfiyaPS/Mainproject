@@ -1,0 +1,134 @@
+{% extends 'guide_dashboard.html' %}
+{% load static %}
+{% block title %}Service Details{% endblock %}
+{% block page_content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Service Details</title>
+  <style>
+    body.service-details-page {
+        
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #ffffff;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            backdrop-filter: blur(1px);
+      }
+  
+      body.service-details-page h1 {
+        font-size: 2em;
+        margin-bottom: 10px;
+      }
+  
+      body.service-details-page ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+  
+      body.service-details-page li {
+        margin-bottom: 5px;
+      }
+  
+      .back-button {
+        display: inline-block;
+        padding: 8px 16px;
+        font-size: 14px;
+        font-weight: bold;
+        text-align: center;
+        text-decoration: none;
+        background-color: #007bff;
+        color: #fff;
+        border: 1px solid #007bff;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .edit-button{
+        display: inline-block;
+        padding: 8px 16px;
+        font-size: 14px;
+        font-weight: bold;
+        text-align: center;
+        text-decoration: none;
+        background-color: #007bff;
+        color: #fff;
+        border: 1px solid #007bff;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+  
+      body.service-details-page a:hover {
+        background-color: #f0f0f0;
+      }
+
+      .service-details-page img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 5px;
+        max-height: 500px;
+        float: left;
+        margin: 10px;
+        border: 1px solid #ddd;
+      }
+  
+      .service-details-page .details {
+        float: right;
+        width: calc(100% - 320px);
+        padding: 10px;
+        border: 1px solid #eee;
+      }
+  
+      .service-details-page h2 {
+        font-size: 1.5em;
+        margin-bottom: 5px;
+      }
+  
+      .service-details-page .features {
+        margin-top: 15px;
+      }
+  
+      .service-details-page .features li {
+        font-size: 0.85em;
+      }
+  </style>
+</head>
+<body class="service-details-page">
+  <h1>{{ service.service_name }} Details</h1>
+  {% if service.images %}
+    <img src="{{ service.images.url }}" alt="Service Image">
+  {% endif %}
+  <ul>
+    <li><strong>Service ID:</strong> {{ service.service_id }}</li>
+    <li><strong>Description:</strong> {{ service.description }}</li>
+    <li><strong>Price per Person:</strong> {{ service.price_per_person }}</li>
+    <li><strong>Duration:</strong> {{ service.duration }} minutes</li>
+    <li><strong>Place:</strong> {{ service.place }}</li>
+    <li><strong>City:</strong> {{ service.city }}</li>
+    <li><strong>State:</strong> {{ service.state }}</li>
+    <li><strong>Country:</strong> {{ service.country }}</li>
+  
+    <li><strong>Features:</strong>
+      <ul>
+        {% for feature in service.features.all %}
+          <li>{{ feature.name }}</li>
+        {% endfor %}
+      </ul>
+    </li>
+  </ul>
+  <li><strong>Visit Times:</strong>
+    <ul>
+        {% for visit_time in service.visit_times.all %}
+            <li>{{ visit_time.get_formatted_time }}</li>
+        {% endfor %}
+    </ul>
+</li>
+</ul>
+  
+  <button onclick="window.location.href='{% url 'view_services' %}'" class="back-button">Back to view services</button>
+  <button onclick="window.location.href='{% url 'edit_service_details' service.service_id %}'" class="edit-button">Edit Service</button>
+</body>
+</html>
+{% endblock %}

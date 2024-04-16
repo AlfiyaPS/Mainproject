@@ -1,0 +1,465 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        /* Your existing CSS styles */
+
+        /* FontAwesome Icons */
+        @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+        
+        /* Reset some default browser styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Global styles */
+        body {
+            font-size: 1.1rem;
+            color: #000000;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            transition: all 0.1s ease-in-out;
+            position: relative;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Remaining styles... */
+        .navbar {
+            background-color: #fff; /* Change background color to white */
+            color: #50C878; /* Change text color to green */
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Add shadow to the navbar */
+        }
+
+        .menu {
+            list-style: none;
+            padding: 0;
+            display: flex;
+        }
+
+        .menu li {
+            margin-right: 20px;
+        }
+
+        .menu li a {
+            text-decoration: none;
+            color: #000; /* Change text color to green */
+            display: block;
+            transition: background-color 0.3s;
+        }
+
+        .menu li a:hover {
+            background-color: #fff; /* Change background color to white */
+            color: #50C878; /* Change text color to green on hover */
+        }
+
+        .menu li a i {
+            margin-right: 10px;
+        }
+
+        /* Main content styles */
+        .content {
+            padding: 20px;
+
+        }
+
+        header {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .menu select {
+            width: 100%;
+            padding: 10px 20px;
+            background-color: #50C878; /* Change background color to green */
+            color: #fff; /* Change text color to white */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .menu select option {
+            color: #000;
+            background-color: #fff; /* Change background color to white */
+        }
+
+        .property-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .property-card {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+            width: 300px;
+
+        }
+
+        .property-image {
+            width: 100%;
+            height: 150px; /* Set a fixed height for all images */
+            overflow: hidden; /* Hide overflow to clip images */
+            position: relative; /* Needed for absolute positioning of images */
+        }
+
+        .property-image img {
+            width: 100%;
+            height: 100%; /* Make the image cover the container */
+            object-fit: cover;
+        }
+
+        .property-details {
+            padding: 10px;
+        }
+
+        .property-details h2 {
+            font-size: 18px;
+            margin: 0;
+        }
+
+        .property-details p {
+            margin: 5px 0;
+        }
+
+        a {
+            text-decoration: none;
+            color: #000000; /* Set your desired link color */
+        }
+
+        /* Add this CSS to change link color on hover */
+        a:hover {
+            color: #50C878; /* Set your desired link color on hover */
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .search-bar input[type="text"] {
+            width: 200px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+
+        .search-bar button {
+            background-color: #50C878; /* Change background color to green */
+            color: #fff; /* Change text color to white */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .search-bar button:hover {
+            background-color: #45a049; /* Change hover background color to a different shade of green */
+        }
+
+        .img-icon {
+            width: 15px; /* Set the width of the images */
+            height: 15px; /* Set the height of the images */
+            object-fit: cover; /* or "contain" based on your preference */
+            margin-right: 5px; /* Add some margin between the image and text */
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1050; /* Increase the z-index to ensure it's above the modal backdrop */
+        }
+    
+        .modal-dialog {
+            max-width: 800px;
+        }
+    
+        .modal-content {
+            padding: 20px;
+        }
+        .modal-backdrop {
+            z-index: 1040; /* Ensure the backdrop is below the modal */
+        }
+    
+        /* Add the following style to make the modal draggable */
+        .modal-dialog {
+            overflow-y: initial !important;
+        }
+    
+        .modal-body {
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+
+        .property-categories-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px; /* Add some bottom margin for spacing */
+        }
+    
+        .property-categories {
+            text-align: center;
+        }
+    
+        .property-categories a {
+            margin: 0 10px; /* Add horizontal margin to separate category links */
+        }
+
+    </style>
+</head>
+
+<body>
+    
+  <script src="{% static '/js/chat.js' %}" type="text/javascript"></script>
+    <nav class="navbar">
+        <div class="logo">
+            <div class="logo">
+                <img src="{% static 'img/stayhub_host.png' %}" alt="StayHub Host" style="height: 50px;">
+            </div>
+        </div>
+        <ul class="menu">
+            <button onclick="window.location.href='http://127.0.0.1:8000/chat'" class="btn btn-primary">Chat</button> <!-- Added Chat button -->
+            <a href="{% url 'guide_display' %}" class="btn btn-success">Looking for a travel guide</a>
+            <a href="{% url 'weather_index' %}" class="btn btn-info">Check Weather</a>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-user"></i>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="profileDropdown">
+                    <span class="dropdown-item">{{ user.guest.guest_first_name }}</span>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{% url 'view_wishlist' %}">Wishlist</a>
+                    <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                </div>
+            </li>
+            <button type="button" class="btn btn-primary" id="filterBtn">Filter</button>
+            
+            
+        </ul>
+    </nav>
+
+    <div class="content">
+        <header>
+            <!-- Your header content... -->
+        </header>
+        <nav>
+            <center>
+                <div class="property-categories">
+                    <a href="{% url 'guest_dashboard' %}" class="{% if not selected_property_type %}active{% endif %}">
+                        <img src="{% static 'img/all_icon.png' %}" alt="All" class="property-category-icon img-icon"> All
+                    </a>
+                    {% for property_type in property_types %}
+                        <a href="{% url 'guest_dashboard' %}?property_type={{ property_type.name }}" class="{% if selected_property_type == property_type.name %}active{% endif %}">
+                            <img src="{% static 'img/'|add:property_type.name|add:'_icon.png' %}" alt="{{ property_type.name }}" class="property-category-icon img-icon"> {{ property_type.name }}
+                        </a>
+                    {% endfor %}
+                </div>
+            </center>
+        </nav>
+        <br>
+        <main>
+            
+            <!-- Search bar -->
+            <form id="property-search-form" class="search-bar" action="{% url 'search_properties' %}" method="get">
+                <input type="text" id="property-name" name="name" placeholder="Property Name">
+            <input type="text" id="property-location" name="location" placeholder="Location">
+            <button type="submit" id="search-button">Search</button>
+            </form>
+            <center>
+                <div class="property-cards">
+                    {% for property in properties %}
+                    <div class="property-card" id="propertyCard{{ property.property_id }}">
+                        <a href="{% if property %}{% url 'guest_property_details' property_id=property.property_id %}{% else %}#{% endif %}">
+                            <div class="property-image swiper-container">
+                                <div class="swiper-wrapper">
+                                    {% for image in property_images %}
+                                        {% if image.property == property %}
+                                            <div class="swiper-slide">
+                                                <img src="{{ image.image.url }}" alt="{{ property.property_name }}">
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <div class="swiper-button-next"></div>
+                                <div class="swiper-button-prev"></div>
+                            </div>
+                            <div class="property-details">
+                                <h2>{{ property.property_name }}</h2>
+                                <p>{{ property.location }}</p>
+                                <p>Price: ₹{{ property.price }} per night</p>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </center>
+        </main>
+        <div id="filterModal" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Filter Properties</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Your filter form goes here -->
+                        <label for="price_range">Price Range:</label>
+                        <input type="range" id="price_range" name="price_range" min="0" max="10000">
+                        <span id="price_range_value">0 - 10000</span>
+                        <br>
+    
+    
+                        <!-- Additional filters -->
+                        <label for="num_bedrooms">Number of Bedrooms:</label>
+                        <input type="number" id="num_bedrooms" name="num_bedrooms" min="1" value="1">
+                        <input type="checkbox" id="exclude_bedrooms" name="exclude_bedrooms"> Exclude
+                        <br>
+    
+                        <label for="num_bathrooms">Number of Bathrooms:</label>
+                        <input type="number" id="num_bathrooms" name="num_bathrooms" min="1" value="1">
+                        <input type="checkbox" id="exclude_bathrooms" name="exclude_bathrooms"> Exclude
+                        <br>
+                        <label for="capacity">Capacity:</label>
+                        <input type="number" id="capacity" name="capacity" min="1" value="1">
+                        <input type="checkbox" id="exclude_capacity" name="exclude_capacity"> Exclude
+                        <br>
+    
+                        <label for="property_type">Property Type:</label>
+                        <select id="property_type" name="property_type">
+                            <option value="">All</option>
+                            {% for property_type in property_types %}
+                                <option value="{{ property_type.name }}">{{ property_type.name }}</option>
+                            {% endfor %}
+                        </select>
+                        <br>
+    
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="applyFiltersBtn">Apply Filters</button>
+                        <button type="button" class="btn btn-danger" id="clearFiltersBtn">Clear All</button>
+                    </div>
+                </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            // Show filter modal when the filter button is clicked
+            $('#filterBtn').on('click', function () {
+                $('#filterModal').modal('show');
+            });
+
+            // Add this code to update the displayed price range value
+            $('#price_range').on('input', function () {
+                var value = $(this).val();
+                $('#price_range_value').text(value);
+            });
+    
+            // Initialize Swiper for each property card
+            document.querySelectorAll('.property-card').forEach(function (card) {
+                var swiper = new Swiper(card.querySelector('.swiper-container'), {
+                    loop: true, // Infinite loop
+                    navigation: {
+                        nextEl: card.querySelector('.swiper-button-next'),
+                        prevEl: card.querySelector('.swiper-button-prev'),
+                    },
+                });
+            });
+    
+            // Add this JavaScript to handle property type selection
+            document.querySelectorAll('.property-categories a').forEach(function (category) {
+                category.addEventListener('click', function (e) {
+                    // Prevent the default link behavior
+                    e.preventDefault();
+    
+                    // Get the URL from the clicked category link
+                    var url = this.getAttribute('href');
+    
+                    // Redirect to the selected URL
+                    window.location.href = url;
+                });
+            });
+    
+            // Add this JavaScript to handle apply filters button
+            $('#applyFiltersBtn').on('click', function () {
+                // Get the selected values from the filter modal and apply filters
+                var priceRange = $('#price_range').val();
+                var numBedrooms = $('#num_bedrooms').val();
+                var numBathrooms = $('#num_bathrooms').val();
+                var capacity = $('#capacity').val();
+                var propertyType = $('#property_type').val();
+            
+                // Check if the exclude checkboxes are selected
+                var excludeBedrooms = $('#exclude_bedrooms').is(':checked');
+                var excludeBathrooms = $('#exclude_bathrooms').is(':checked');
+                var excludeCapacity = $('#exclude_capacity').is(':checked');
+            
+                // Build the URL based on selected filters
+                var url = '{% url "guest_dashboard" %}?';
+                if (priceRange) {
+                    url += 'price_range=' + priceRange + '&';
+                }
+                if (numBedrooms && !excludeBedrooms) {
+                    url += 'num_bedrooms=' + numBedrooms + '&';
+                }
+                if (numBathrooms && !excludeBathrooms) {
+                    url += 'num_bathrooms=' + numBathrooms + '&';
+                }
+                if (capacity && !excludeCapacity) {
+                    url += 'capacity=' + capacity + '&';
+                }
+                if (propertyType) {
+                    url += 'property_type=' + propertyType + '&';
+                }
+            
+                // Remove the trailing '&' and reload the page
+                window.location.href = url.slice(0, -1);
+            });
+    
+            // Add this JavaScript to handle clear filters button
+            $('#clearFiltersBtn').on('click', function () {
+                // Reset all filter values in the modal
+                $('#price_range').val(0);
+                $('#num_bedrooms').val(1);
+                $('#num_bathrooms').val(1);
+                $('#capacity').val(1);
+                $('#property_type').val('');
+    
+                // You can trigger the apply filters logic here if needed
+    
+                // For simplicity, let's reload the page without filters
+                window.location.href = '{% url "guest_dashboard" %}';
+            });
+        });
+    </script>
+    
+</body>
+
+</html>

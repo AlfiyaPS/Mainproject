@@ -1,0 +1,77 @@
+/* static/css/styles.css */
+
+/* Add your styles here */
+
+form {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+h2 {
+    color: #333;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+a {
+    display: inline-block;
+    margin-top: 10px;
+    color: #3498db;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+fieldset {
+    margin-bottom: 10px;
+}
+
+fieldset legend {
+    margin-bottom: 8px;
+}
+
+/* Style for the feature choices and checkboxes */
+fieldset label {
+    display: inline-block;
+    margin-right: 10px; /* Adjust the spacing between feature choices and checkboxes */
+}
+
+.submit_2 {
+    margin-top: 20px;
+}
+
+.submit_2i h5 {
+    margin-bottom: 10px;
+}
+
+.submit_2i input {
+    margin-right: 10px;
+}

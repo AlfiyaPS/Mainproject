@@ -1,0 +1,13 @@
+<!-- razorpay_payment.html -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<button type="button" class="payment-button" onclick="handleRazorpayPayment()">Make Payment</button>
+
+<script>
+    function handleRazorpayPayment() {
+        // Make an AJAX request to your server to initiate the Razorpay payment
+        // Include the booking and payment details
+
+        // After successful payment, redirect to the success page
+        window.location.href = "{% url 'razorpay_payment_success' %}";
+    }
+</script>

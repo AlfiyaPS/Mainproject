@@ -1,0 +1,234 @@
+{% extends 'layouts/main.html' %}
+{% load static %}
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Host Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color:#ECFFDC;
+            margin: 0;
+            padding: 120px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+    
+        .registration-form-container {
+            width: 150%;
+            max-width: 500px; 
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+    
+        .form-group {
+            margin-bottom: 20px;
+        }
+    
+        label {
+            display: block;
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+    
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 16px;
+            background-color: #f9f9f9;
+            color: #333;
+            transition: border-color 0.3s;
+        }
+    
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        input[type="file"]:focus {
+            outline: none;
+            border-color: #007BFF;
+        }
+    
+        button.submit-button {
+            width: 100%;
+            background-color: #4CAF50; /* Change background color to green (you can use your desired green color) */
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+    
+        .error-message {
+            color: #ff0000;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    
+        @media (max-width: 768px) {
+            .registration-form-container {
+                max-width: 100%;
+                margin: 10px;
+            }
+        }
+        button.submit-button:hover {
+            background-color: #45a049; /* Change hover background color to a different shade of green */
+        }
+    </style>
+    
+</head>
+<body><center>
+    <div class="registration-form-container">
+        <h2>Host Registration</h2>
+        <form id="registration-form" action="#" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="host_first_name">First name:</label>
+                <input type="text" id="host_first_name" name="host_first_name" onkeyup="validateName(this, 'first_name_error')" placeholder="Enter your First name" required>
+                <span id="first_name_error" style="color: red;"></span>
+            </div>
+            <div class="form-group">
+                <label for="host_last_name">Last Name:</label>
+                <input type="text" id="host_last_name" name="host_last_name" onkeyup="validateName(this, 'last_name_error')" placeholder="Enter your last name" required>
+                <span id="last_name_error" style="color: red;"></span>
+            </div>
+            
+            <div class="form-group">
+                <label for="property_name">Property Name:</label>
+                <input type="text" id="property_name" name="property_name"  placeholder=" Enter Your Property Name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address:</label>
+                <input type="text" id="email" name="email" onchange="validateEmail(this.value)" placeholder="Enter your valid Email">
+                <span id="emailError" style="color: red;"></span>
+                
+            </div>
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" onkeyup="validateUser_Name()" placeholder="Enter your Username name" required autocomplete="username">
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" oninput="validatePassword()" placeholder="Enter your Password">
+    
+                <span id="passwordError" style="color: red;"></span>
+            </div>
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password:</label>
+                <input type="password" id="confirm_password" name="confirm_password" oninput="validateConfirmPassword()" placeholder="Confirm your password again">
+                <span id="confirmPasswordError" style="color: red;"></span>
+            </div>
+            <div class="form-group">
+                <label for="license_upload">License Upload:</label>
+                <input type="file" id="license_upload" name="license_upload" accept=".pdf, .jpg, .png" required>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="submit-button">Register</button>
+            </div>
+        </form>
+    </div>
+    <script src="script.js"></script>
+    <script>
+        // Function to validate first name (only alphabets)
+        function validateName(inputElement, errorId) {
+            const namePattern = /^[A-Z][a-zA-Z\s]*$/; // First letter capital, alphabetic characters, and spaces
+            const inputValue = inputElement.value.trim();
+            const errorElement = document.getElementById(errorId);
+        
+            if (inputValue === "") {
+                errorElement.textContent = "This field should not be blank";
+            } else if (!namePattern.test(inputValue)) {
+                errorElement.textContent = "Only alphabetic characters and spaces are allowed, and the first letter should be capital";
+            } else {
+                errorElement.textContent = "";
+            }
+        }
+          // Function to validate phone number (10 digits)
+          function validatePhoneNumber(phone) {
+              // Regular expression for basic phone number validation
+              var phonePattern = /^[0-9]{10}$/;
+      
+              var phoneError = document.getElementById('phoneError');
+      
+              if (phonePattern.test(phone)) {
+                  // Valid phone number format
+                  phoneError.textContent = '';
+              } else {
+                  // Invalid phone number format
+                  phoneError.textContent = 'Invalid phone number format';
+              }
+          }
+        //validate email
+          function validateEmail(email) {
+            // Regular expression for basic email validation
+            var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+  
+            var emailError = document.getElementById('emailError');
+  
+            if (emailPattern.test(email)) {
+                // Valid email format
+                emailError.textContent = '';
+            } else {
+                // Invalid email format
+                emailError.textContent = 'Invalid email format';
+            }
+        }
+           // Function to validate password (at least 8 characters)
+           function validatePassword() {
+            var password = document.getElementById('password').value;
+            var passwordError = document.getElementById('passwordError');
+        
+            // Regular expression for checking if the password contains at least 8 characters and at least one special character
+            var passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        
+            if (passwordPattern.test(password)) {
+                // Password meets the criteria
+                passwordError.textContent = '';
+            } else {
+                // Password does not meet the criteria
+                passwordError.textContent = 'Password must contain at least 8 characters, including at least one special character';
+            }
+        }
+        
+
+      // Function to validate confirm password
+      function validateConfirmPassword() {
+        var password = document.getElementById('password').value; // Get the password
+        var confirmPassword = document.getElementById('confirm_password').value; // Get the confirm password
+        var confirmPasswordError = document.getElementById('confirmPasswordError'); // Get the error element
+    
+        if (password === confirmPassword) {
+            // Passwords match
+            confirmPasswordError.textContent = '';
+        } else {
+            // Passwords do not match
+            confirmPasswordError.textContent = 'Passwords do not match';
+        }
+    }
+    </script>
+</body></center>
+</html>
+{% endblock body %}

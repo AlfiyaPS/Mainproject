@@ -1,0 +1,101 @@
+<!-- confirmation_page.html -->
+{% extends 'inc/nav_guest.html' %}
+
+{% block title %}Confirmation and Payment{% endblock %}
+
+{% block page_content %}
+<style>
+  /* Add this to your existing CSS file or create a new one */
+  .confirmation-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .confirmation-details {
+    margin-bottom: 20px;
+  }
+
+  .confirmation-details p {
+    margin: 8px 0;
+  }
+
+  .payment-form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .payment-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .payment-button:hover {
+    background-color: #45a049;
+  }
+
+</style>
+<div class="confirmation-container">
+  <h2>Confirmation and Payment</h2>
+  <div class="confirmation-details">
+    <p><strong>Property:</strong> {{ property.property_name }}</p>
+    <p><strong>Check-In Date:</strong> {{ check_in_date }}</p>
+    <p><strong>Check-Out Date:</strong> {{ check_out_date }}</p>
+    <p><strong>Number of Guests:</strong> {{ num_guests }}</p>
+    <p><strong>Total Price:</strong> ₹{{ total_price }}</p>
+  </div>
+  <div class="btn_container">
+    <!-- Payment Button -->
+    <form id="paymentForm" action="{% url 'confirm_and_pay' property_id %}/paymenthandler/" method="POST" class="payment-form">
+      {% csrf_token %}
+      <input type="hidden" name="total_price" value="{{ total_price }}">
+      <button type="submit" class="payment-button">Make payment</button>
+    </form>
+  </div>
+</div>
+
+<!-- Razorpay's Javascript code. -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+  var total_price = "{{ total_price }}";
+var amount = parseFloat(total_price.replace(',', ''));
+
+if (isNaN(amount)) {
+    // Handle the case where total_price is not a valid number
+    amount = 0;
+}
+
+amount *= 100;  // Convert to paise
+
+var options = {
+    key: "{{ razorpay_merchant_key }}",
+    amount: amount,
+    currency: "{{ currency }}",
+    name: "StayHub",
+    order_id: "{{ razorpay_order_id }}",
+    callback_url: "{{ callback_url }}",
+};
+
+// initialize Razorpay with the options.
+var rzp1 = new Razorpay(options);
+
+// add event listener to the payment button.
+document.getElementById("paymentForm").onsubmit = function (e) {
+    // Open Razorpay when the form is submitted
+    rzp1.open();
+    e.preventDefault();
+};
+
+  
+
+</script>
+{% endblock %}

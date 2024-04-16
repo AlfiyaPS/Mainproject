@@ -1,0 +1,117 @@
+{% extends 'inc/nav_guests.html' %}
+{% block title %}Service Details{% endblock %}
+{% block page_content %}
+<style>
+    body, h1, h2, h3, p, ul, li {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+      }
+      /* Service details container */
+      .service-details {
+        max-width: 800px; /* Max width for responsiveness */
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      
+      /* Service image */
+      .service-image {
+        width: 100%;
+        height: auto;
+        margin-bottom: 20px;
+        border-radius: 8px;
+      }
+      
+      /* Service details list */
+      .service-details ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      /* Service details list items */
+      .service-details li {
+        margin-bottom: 10px;
+        font-weight: bold;
+      }
+      
+      /* Feature list */
+      .service-details .features li {
+        margin-bottom: 5px;
+      }
+      
+      /* Book service button */
+      .book-service-button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+      }
+      
+      /* Book service button hover effect */
+      .book-service-button:hover {
+        background-color: #45a049;
+      }
+</style>
+
+<center><h1>{{ service.service_name }} Details</h1></center>
+<div class="service-details">
+  {% if service.images %}
+    <img src="{{ service.images.url }}" alt="Service Image" class="service-image">
+  {% endif %}
+  <ul class="service-details">
+    <li><strong>Service ID:</strong> {{ service.service_id }}</li>
+    <li><strong>Description:</strong> {{ service.description }}</li>
+    <li><strong>Price per Person:</strong> ₹ {{ service.price_per_person }}</li>
+    <li><strong>Duration:</strong> {{ service.duration }} minutes</li>
+    <li><strong>Place:</strong> {{ service.place }}</li>
+    <li><strong>City:</strong> {{ service.city }}</li>
+    <li><strong>State:</strong> {{ service.state }}</li>
+    <li><strong>Country:</strong> {{ service.country }}</li>
+    <li><strong>Service Type:</strong> {{ service.service_type }}</li>
+    <p><strong>Average Rating:</strong>
+      {% if average_rating %}
+          <span class="star-rating">
+              {% for i in "12345" %}
+                  {% if i <= average_rating %}
+                      <span>&#9733;</span> <!-- Filled star -->
+                  {% else %}
+                      <span>&#9734;</span> <!-- Empty star -->
+                  {% endif %}
+              {% endfor %}
+          </span>
+          ({{ average_rating }}) <!-- Display numeric rating beside stars -->
+      {% else %}
+          No ratings yet
+      {% endif %}
+  </p>
+
+    <li>
+      <strong>Features:</strong>
+      <ul class="features">
+        {% for feature in service.features.all %}
+          <li>{{ feature.name }}</li>
+        {% endfor %}
+      </ul>
+    </li>
+  </ul>
+  <button class="book-service-button" onclick="bookService('{{ service.service_id }}')">Book Service</button>
+</div>
+<script>
+    function bookService(serviceId) {
+      // Redirect to the service_booking page with the service ID
+      window.location.href = `/service_booking/${serviceId}/`;
+    }
+  </script>
+{% endblock %}
+

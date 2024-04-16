@@ -1,0 +1,62 @@
+<!-- edit_guide_profile.html -->
+{% extends 'guide_dashboard.html' %}
+{% load static %}
+
+{% block title %}Edit Profile{% endblock %}
+{% block page_content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Guide Profile</title>
+    <!-- Add your CSS styles here -->
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+</head>
+
+<body>
+
+    <h2>Edit Guide Profile</h2>
+    
+
+    <!-- edit_guide_profile.html -->
+<form method="post" action="{% url 'edit_guide_profile' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <!--<img src="{{ form.instance.profilePicture.url }}" alt="Current Profile Picture" style="max-width: 150px;">-->
+    
+    <!-- Personal Information -->
+    <label for="guide_first_name">First Name:</label>
+    <input type="text" name="guide_first_name" value="{{ form.instance.guide_first_name }}" required>
+
+    <label for="guide_last_name">Last Name:</label>
+    <input type="text" name="guide_last_name" value="{{ form.instance.guide_last_name }}" required>
+    <label for="bio">Bio:</label>
+    <input type="text" id="bio" name="bio" value="{{ form.instance.bio }}" required>
+
+    <label for="phone_number">Phone Number:</label>
+    <input type="text" name="phone_number" value="{{ form.instance.phone_number }}" required>
+    <label for="gender">Gender:</label>
+    <select name="gender" id="gender" required>
+        <option value="male" {% if form.gender.value == 'male' %}selected{% endif %}>Male</option>
+        <option value="female" {% if form.gender.value == 'female' %}selected{% endif %}>Female</option>
+        <option value="other" {% if form.gender.value == 'other' %}selected{% endif %}>Other</option>
+    </select>
+
+    <label for="profilePicture">Profile Picture:</label>
+    <input type="file" id="profilePicture" name="profilePicture" accept="image/*">
+    <label for="location">Location:</label>
+    <input type="text" id="location" name="location" value="{{ form.instance.location }}" required>
+
+    <label for="languages_spoken">Languages spoken:</label>
+    <input type="text" id="languages_spoken" name="languages_spoken" value="{{ form.instance.languages_spoken }}" required>
+
+    <button type="submit">Update Profile</button>
+</form>
+
+        
+
+</body>
+
+</html>
+{% endblock %}

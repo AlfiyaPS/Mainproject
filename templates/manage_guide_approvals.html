@@ -1,0 +1,70 @@
+{% extends "admin_dashboard.html" %}
+
+{% block page_content %}
+    <h1>Manage Guide Approvals</h1>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        /* Style the buttons */
+        button {
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 3px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        /* Green button for approve */
+        button.approve {
+            background-color: #228B22;
+            color: white;
+        }
+
+        /* Red button for reject */
+        button.reject {
+            background-color: #FF0000;
+            color: white;
+        }
+    </style>
+
+    <table>
+        <tr>
+            <th>Guide Name</th>
+            <th>Email</th>
+            <th>Username</th>
+            <th>Actions</th>
+        </tr>
+        {% for guide in unapproved_guides %}
+            <tr>
+                <td>{{ guide.guide_first_name }} {{ guide.guide_last_name }}</td>
+                <td>{{ guide.email }}</td>
+                <td>{{ guide.username }}</td>
+                <td>
+                    <form method="post" action="{% url 'manage_guide_approvals' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="guide_id" value="{{ guide.id }}">
+                        <button type="submit" name="action" value="approve" class="approve">Approve</button>
+                        <button type="submit" name="action" value="reject" class="reject">Reject</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

@@ -1,0 +1,24 @@
+<!-- property_display.html -->
+{% extends 'host_dashboard.html' %}
+{% load static %}
+
+
+{% block title %}View Profile{% endblock %}
+
+{% block page_content %}
+    <h1>Your Properties</h1>
+    {% if properties %}
+        <div class="property-container">
+            {% for property in properties %}
+                <div class="property-item">
+                    <img src="{% if property.cover_photo %}{{ property.cover_photo.image.url }}{% else %}{% static 'img/default_property_image.jpg' %}{% endif %}" alt="{{ property.property_name }}">
+                    <h3>{{ property.property_name }}</h3>
+                    <p>{{ property.location }}</p>
+                    <!-- Add more details as needed -->
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No properties added yet.</p>
+    {% endif %}
+{% endblock %}

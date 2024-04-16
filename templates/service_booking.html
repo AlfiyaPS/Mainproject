@@ -1,0 +1,184 @@
+{% extends 'inc/nav_guests.html' %}
+
+{% block title %}Service Booking{% endblock %}
+
+{% block page_content %}
+<style>
+  /* Service booking container */
+  .service-booking {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Service image */
+  .service-booking .service-image {
+    width: 50%;
+    height: auto;
+    margin-bottom: 20px;
+    border-radius: 5px;
+  }
+
+  /* Service details */
+  .service-booking h1,
+  .service-booking h2,
+  .service-booking p {
+    margin-bottom: 10px;
+  }
+
+  /* Form styling */
+  .service-booking form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .service-booking label {
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  .service-booking input,
+  .service-booking select,
+  .service-booking textarea {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%; /* Make inputs full width */
+  }
+
+  .service-booking button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    margin-top: 10px; /* Add space after form elements */
+  }
+
+  .service-booking button:hover {
+    background-color: #45a049;
+  }
+
+  /* Guest info styling */
+  .guest-info {
+    margin-bottom: 15px;
+  }
+
+  .guest-info strong {
+    margin-right: 5px;
+  }
+  .booked-date {
+    text-decoration: line-through;
+    color: #999;
+  }
+</style>
+
+<div class="service-booking">
+  <h1>Service Booking</h1>
+  <img src="{{ service.images.url }}" alt="Service Image" class="service-image">
+  <h2>{{ service.service_name }}</h2>
+  
+  <p>Price per Person: ₹{{ service.price_per_person }}</p>
+  <div class="guest-info">
+    <strong>Guest Name:</strong> {{ request.user.guest.guest_first_name }} {{ request.user.guest.guest_last_name }}<br>
+    <strong>Phone Number:</strong> {{ request.user.guest.phone_number }}
+  </div>
+
+  <form method="post" action="{% url 'service_booking' service_id=service.service_id %}">
+
+    {% csrf_token %}
+
+    <label for="booking_date">Booking Date:</label>
+    <input type="date" id="booking_date" name="booking_date" required>
+
+    <label for="number_of_guests">Number of Guests:</label>
+    <input type="number" id="number_of_guests" name="number_of_guests" value="1" min="1" max="{{ service.capacity }}" required onchange="calculateTotal()">
+
+    <label for="additional_request">Additional Request:</label>
+    <textarea id="additional_request" name="additional_request" rows="4" cols="50"></textarea>
+
+    <label for="total_price">Total Price:</label>
+    <input type="number" id="total_price" name="total_price">
+
+
+    <button type="submit">Confirm Booking</button>
+  </form>
+</div>
+
+<script>
+    var today = new Date().toISOString().split('T')[0]; // Get today's date
+
+  // Mark booked dates (replace this with your actual data)
+    var bookedDates = ["2024-03-01", "2024-03-05", "2024-03-10"];
+    var bookingDateInput = document.getElementById('booking_date');
+
+    // Set the min attribute to prevent selecting past dates
+    bookingDateInput.min = today;
+
+    // Add booked dates to the array of dates to be disabled
+    bookedDates.forEach(function(bookedDate) {
+        var option = document.createElement('option');
+        option.value = bookedDate;
+        bookingDateInput.appendChild(option);
+    });
+
+    // Update the calendar when the user selects a date
+    bookingDateInput.addEventListener('change', function() {
+        calculateTotal();
+        markBookedDates();
+    });
+
+    // Function to mark booked dates in the calendar
+    function markBookedDates() {
+        var selectedDate = bookingDateInput.value;
+        var options = bookingDateInput.options;
+    
+        if (!options || options.length === 0) {
+            // Exit the function if options is undefined or empty
+            return;
+        }
+    
+        for (var i = 0; i < options.length; i++) {
+            var option = options[i];
+    
+            if (!option) {
+                // Skip if option is undefined
+                continue;
+            }
+    
+            var date = option.value;
+    
+            // Check if the date is booked
+            if (bookedDates.includes(date)) {
+                option.classList.add('booked-date');
+            } else {
+                option.classList.remove('booked-date');
+            }
+    
+            // Check if the date is the selected date
+            if (date === selectedDate) {
+                option.selected = true;
+            }
+        }
+    }
+    function calculateTotal() {
+        var numberOfGuests = document.getElementById('number_of_guests').value;
+        var pricePerPerson = {{ service.price_per_person }};
+        console.log("Number of Guests:", numberOfGuests);
+        console.log("Price per Person:", pricePerPerson);
+        var total = numberOfGuests * pricePerPerson;
+        console.log("Total:", total);
+        document.getElementById('total_price').value = total;
+    }
+    
+</script>
+
+{% endblock %}

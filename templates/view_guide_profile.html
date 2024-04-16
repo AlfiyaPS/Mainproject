@@ -1,0 +1,36 @@
+<!-- view_guide_profile.html -->
+{% extends 'guide_dashboard.html' %}
+{% block title %}View guide{% endblock %}
+{% block page_content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide Profile</title>
+    <!-- Add your CSS styles here -->
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+</head>
+
+<body>
+
+    <h2>Guide Profile</h2>
+
+    <div class="profile-container">
+        <img src="{{ guide.profilePicture.url }}" alt="Profile Picture">
+        <p>First Name: {{ guide.guide_first_name }}</p>
+        <p>Last Name: {{ guide.guide_last_name }}</p>
+        <p>Bio: {{ guide.bio }}</p>
+        <p>Email: {{ guide.email }}</p>
+        <p>Phone Number: {{ guide.phone_number }}</p>
+        <p>Username:{{ guide.username }}</p>
+        <p>Location:{{ guide.location }}</p>
+        <p>Languages: {{ guide.languages_spoken }}</p>
+    </div>
+
+</body>
+
+</html>
+{% endblock %}

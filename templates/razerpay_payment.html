@@ -1,0 +1,20 @@
+<!-- payment_page.html -->
+{% extends 'inc/nav_guest.html' %}
+
+{% block title %}Payment Page{% endblock %}
+
+{% block page_content %}
+
+<!-- razorpay_payment.html -->
+
+  <h2>Razorpay Payment</h2>
+  <p>Total Amount: ₹{{ total_price }}</p>
+
+  <form method="post" action="{% url 'razorpay_payment_handler' %}">
+    {% csrf_token %}
+    <input type="hidden" name="razorpay_order_id" value="{{ razorpay_order_id }}">
+    <!-- Include other necessary input fields for the payment form -->
+
+    <button type="submit">Pay with Razorpay</button>
+  </form>
+{% endblock %}

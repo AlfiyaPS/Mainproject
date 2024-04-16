@@ -1,0 +1,107 @@
+{% extends 'inc/nav_guests.html' %}
+
+{% block title %}Booking Status{% endblock %}
+
+{% block page_content %}
+<!DOCTYPE html>
+<html>
+    <head>
+      <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+        <title>Booking Status</title>
+        <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px auto;
+          }
+      
+          th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+          }
+      
+          th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+          }
+      
+          /* Empty booking styling */
+          .empty-booking td {
+            color: #999;
+            font-style: italic;
+          }
+      
+          /* Pay button styling */
+          .pay-button {
+            background-color: #4caf50;
+            color: white;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+          }
+      
+          .pay-button:hover {
+            background-color: #45a049;
+          }
+        </style>
+    </head>
+    <body>
+        <h1>Booking Status</h1>
+        <table>
+            <tr>
+                <th>Booking ID</th>
+                <th>Service ID</th>
+                <th>Service Name</th>
+                <th>Guide Name</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            <tr>
+                <td>{{ booking.booking_id }}</td>
+                <td>{{ booking.service.service_id }}</td>
+                <td>{{ booking.service.service_name }}</td>
+                <td>{{ booking.service.guide.guide_first_name }} {{ booking.service.guide.guide_last_name }}</td>
+                <td>{{ booking.service.price_per_person }}</td>
+                <td><!-- Add status logic here --></td>
+                <td><button id="payButton" class="pay-button" onclick="initiateRazorpay()">Pay</button></td>
+              </tr>
+          </table>
+    <!-- Add other booking details as needed -->
+    <script>
+      function initiateRazorpay() {
+          var options = {
+              key: 'rzp_test_L8bounR3Yuf87Z', // Replace with your Razorpay test key
+              amount: {{ amount_in_paise }},
+
+              currency: 'INR', // Replace with your currency code
+              name: 'StayHub',
+              description: 'Service Payment',
+              image: 'https://your-company-logo-url.png',
+              handler: function (response) {
+                  alert('Payment successful! Payment ID: ' + response.razorpay_payment_id);
+                  // You can handle the payment success here, e.g., update the booking status
+              },
+              prefill: {
+                  name: 'Customer Name',
+                  email: 'customer@example.com',
+                  contact: '1234567890'
+              },
+              theme: {
+                  color: '#4caf50'
+              }
+          };
+
+          var razorpayInstance = new Razorpay(options);
+          razorpayInstance.open();
+      }
+  </script>
+</body>
+</html>
+{% endblock %}

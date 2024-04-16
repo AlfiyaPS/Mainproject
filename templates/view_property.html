@@ -1,0 +1,135 @@
+<!-- property_details.html -->
+{% extends 'host_dashboard.html' %}
+{% load static %}
+
+{% block title %}View Profile{% endblock %}
+
+{% block page_content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Property Details</title>
+
+    <!-- Add a new CSS block for property details -->
+    <style>
+        /* Additional CSS specific to the property details page */
+        .property-details-container {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .property-details-title {
+            font-size: 24px;
+            color: #333;
+            margin: 20px 0;
+        }
+
+        .property-details-info {
+            font-size: 18px;
+            margin: 10px 0;
+            text-align: center; /* Align text to the center */
+        }
+
+        .property-details-info p {
+            margin: 5px 0;
+        }
+
+        .property-images-container {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .property-images-title {
+            font-size: 24px;
+            color: #333;
+            margin: 20px 0;
+        }
+
+        .property-images-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center; /* Center-align images */
+            align-items: center;
+        }
+
+        .property-images-gallery img {
+            max-width: 100%; /* Limit image width */
+            max-height: 300px; /* Fix the height of images */
+            margin: 10px;
+        }
+
+        .edit-button {
+            background-color: #45a049;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .back-button {
+            background-color: #ccc;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .back-button:hover {
+            background-color: #999;
+        }
+
+        /* Style for property containers */
+        .property-container {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+       <center><h1 class="property-details-title">Property Details</h1></center>
+       
+        {% for property in properties %}
+            <div class="property-details-container">
+                <h2>{{ property.property_name }}</h2>
+                <div class="property-details-info">
+                    <p>Description: {{ property.description }}</p>
+                    <p>Location: {{ property.location }}</p>
+                    <p>Property Type: {{ property.property_type }}</p>
+                    <p>Number of Bedrooms: {{ property.number_of_bedrooms }}</p>
+                    <p>Number of Bathrooms: {{ property.number_of_bathrooms }}</p>
+                    <p>Capacity: {{ property.capacity }}</p>
+                    <p>Price: ₹{{ property.price }}</p>
+                </div>
+
+                <!-- Display the property images if available -->
+                <div class="property-images-container">
+                    <h2 class="property-images-title">Property Images</h2>
+                    <div class="property-images-gallery">
+                        {% if property.images %}
+                            {% for image in property.images %}
+                                <div class="image-container">
+                                    <img src="{{ image.image.url }}" alt="Property Image">
+                                    <span class="image-tooltip">{{ image.description }}</span>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <a href="{% url 'edit_property' property_id=property.property_id %}" class="edit-button">Edit Property</a>
+                <a href="{% url 'host_dashboard' %}" class="back-button">Back</a>
+            </div>
+        {% endfor %}
+    </div>
+
+</body>
+</html>
+{% endblock %}

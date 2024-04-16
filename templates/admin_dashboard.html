@@ -1,0 +1,57 @@
+{% extends 'inc/nav_admin.html' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block page_content %}
+<style>
+    /* Add your CSS styles for this page here */
+    .admin-stats-container {
+        display: flex;
+        justify-content: space-around;
+        margin: 20px;
+        padding: 50px; 
+        background-color: #f7f7f7; /* Add a light background color */
+        border-radius: 10px; /* Increase border radius for rounded corners */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+    }
+
+    .admin-stat {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px #50c878;
+        text-align: center;
+        flex: 1;
+    }
+
+    .admin-stat h2 {
+        font-size: 25px;
+        color: #50C878;
+    }
+
+    .admin-stat p {
+        font-size: 24px;
+        color: #000;
+        font-weight: bold;
+    }
+</style>
+
+    <div class="admin-stats-container">
+        <div class="admin-stat">
+            <h2>Number of Guests</h2>
+            <p>{{ number_of_guests }}</p>
+        </div>
+        <div class="admin-stat">
+            <h2>Number of Hosts</h2>
+            <p>{{ number_of_hosts }}</p>
+        </div>
+        <div class="admin-stat">
+            <h2>Number of Pending Host Approvals</h2>
+            <p>{{ number_of_pending_approvals }}</p>
+        </div>
+        <div class="admin-stat">
+            <h2>Number of Pending Guide Approvals</h2>
+            <p>{{ number_of_pending_guide_approvals }}</p>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'inc/nav_guest.html' %}
+
+{% block title %}Booking Updates{% endblock %}
+
+{% block page_content %}
+  <div class="container mt-4">
+    <h2>Booking Updates</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Booking ID</th>
+          <th scope="col">Property Name</th>
+          <th scope="col">Check-In Date</th>
+          <th scope="col">Check-Out Date</th>
+          <th scope="col">Payment Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for booking_info in booking_data %}
+          <tr>
+            <th scope="row">{{ booking_info.booking_id }}</th>
+            <td>{{ booking_info.property_name }}</td>
+            <td>{{ booking_info.check_in_date }}</td>
+            <td>{{ booking_info.check_out_date }}</td>
+            <td>{{ booking_info.payment_status }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

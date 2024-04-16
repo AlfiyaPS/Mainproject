@@ -1,0 +1,29 @@
+<!-- receipt_template.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt</title>
+    <!-- Add your styling here if needed -->
+</head>
+<body>
+    <h2>Receipt</h2>
+    
+    <!-- Add your receipt content here -->
+    <p>Thank you for your payment. This is your receipt.</p>
+    
+    <p>Booking Details:</p>
+    <ul>
+        <li>Property: {{ data.property.property_name }}</li>
+        <li>Check-In Date: {{ data.check_in_date }}</li>
+        <li>Check-Out Date: {{ data.check_out_date }}</li>
+        <li>Number of Guests: {{ data.num_guests }}</li>
+        <li>Total Price: ₹{{ data.total_price }}</li>
+    </ul>
+
+    <!-- Add any additional information or formatting as needed -->
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!-- paymentsuccess.html -->
+{% extends 'base.html' %}
+
+{% block title %}Payment Successful{% endblock %}
+
+{% block content %}
+  <h2>Payment Successful</h2>
+  <p>Your payment was successful. Thank you for booking with us!</p>
+
+  <h3>Booking Details</h3>
+  <p><strong>Property Name:</strong> {{ property_info.property_name }}</p>
+  <p><strong>Check-in Date:</strong> {{ property_info.check_in_date }}</p>
+  <p><strong>Check-out Date:</strong> {{ property_info.check_out_date }}</p>
+  <p><strong>Number of Guests:</strong> {{ property_info.num_guests }}</p>
+  <p><strong>Total Price:</strong> {{ property_info.total_price }}</p>
+
+  <p>Additional details or instructions can be added here.</p>
+
+  <a href="{% url 'download_receipt' %}">Download Receipt</a>
+{% endblock %}

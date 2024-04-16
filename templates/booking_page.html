@@ -1,0 +1,83 @@
+<!-- booking_page.html -->
+{% extends 'inc/nav_guest.html' %}
+
+{% block title %}Booking Page{% endblock %}
+
+{% block page_content %}
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+        color: #333;
+        margin: 0;
+        padding: 0;
+    }
+
+    h2 {
+        color: #228B22;
+    }
+
+    form {
+        max-width: 400px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    input, button {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    button {
+        background-color: #228B22;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #c82333;
+    }
+
+    p {
+        margin-bottom: 10px;
+    }
+</style>
+
+<h2><center>Book Property - {{ property.property_name }}</h2></center>
+
+
+<form method="post" action="{% url 'confirm_and_pay' property_id=property.property_id %}">
+  {% csrf_token %}
+
+  <label for="check_in_date">Check-In Date:</label>
+  <input type="date" id="check_in_date" name="check_in_date" required min="{% now 'Y-m-d' %}">
+
+  <label for="check_out_date">Check-Out Date:</label>
+  <input type="date" id="check_out_date" name="check_out_date" required min="{% now 'Y-m-d' %}">
+
+  <label for="num_guests">Number of Guests (Max {{ property.capacity }}):</label>
+  <input type="number" id="num_guests" name="num_guests" min="1" max="{{ property.capacity }}" required>
+
+  <!-- Include these hidden input fields for other data -->
+  <input type="hidden" name="total_price" value="{{ total_price }}">
+
+  <!-- Display property details for reference -->
+  <p>Property: {{ property.property_name }}</p>
+  <p>Price per Night: ₹{{ property.price }}</p>
+
+  <button type="submit">Confirm and Pay</button>
+</form>
+  
+{% endblock %}

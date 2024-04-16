@@ -1,0 +1,158 @@
+{% extends 'inc/nav_guests.html' %}
+
+{% block title %}Guide Details{% endblock %}
+
+{% block page_content %}
+<style>
+    #map {
+        height: 400px;
+        width: 100%;
+    }
+
+    /* Container for guide details */
+    .guide-details-container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: left;
+    }
+
+    .guide-details-container img {
+        max-width: 100%;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        max-height:300px;
+    }
+
+    body.view-services-page {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        {% comment %} background-image: url('{% static "/img/service.jpeg" %}'); {% endcomment %}
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat; /* Prevent image from repeating */
+        background-color: #ffffff;
+        color: #333;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        backdrop-filter: blur(1px);
+    }
+
+    h1.view-services-page {
+        color: #333;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .service-card {
+        display: flex;
+        background-color: #fff;
+        border: none; /* Remove border */
+        border-radius: 8px; /* Adjust the border radius as needed */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        padding: 10px;
+        /* Flex properties for responsive layout */
+        flex-wrap: wrap; /* Allow items to wrap if content overflows */
+        justify-content: space-between; /* Align items horizontally */
+        align-items: flex-start; /* Align items vertically */
+        max-width: 800px; /* Adjust the maximum width as needed */
+      }
+      
+      .service-details {
+        flex: 1; /* Make service details section flexible */
+        margin-left: 10px; /* Adjust margin as needed */
+        
+      }
+      
+      .service-card img {
+        flex-basis: 40%; /* Set the width of the image to 40% of the card */
+        max-width: 100%;
+        height: auto;
+        border-radius: 5px;
+        margin-bottom: 10px; /* Add margin */
+      }
+    .back-button {
+        margin-top: 20px;
+        padding: 10px;
+        background-color: #50C878;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .back-button:hover {
+        background-color: #00A36C;
+    }
+    .service-card .like-button {
+        
+      }
+      
+      /* Reserve button styles */
+      .service-card .reserve-button {
+        /* Add or adjust styles as needed for reserve button appearance */
+      }
+</style>
+<center><h1>{{ guide.guide_first_name }} {{ guide.guide_last_name }} Details</h1></center>
+<div class="guide-details-container">
+    
+
+    <div>
+        {% if guide.profilePicture %}
+            <img src="{{ guide.profilePicture.url }}" alt="{{ guide.guide_first_name }} {{ guide.guide_last_name }}">
+        {% else %}
+            <p>No image available</p>
+        {% endif %}
+        <p>Location: {{ guide.location }}</p>
+        <p>Email: {{ guide.email }}</p>
+        <p>Phone Number: {{ guide.phone_number }}</p>
+    </div>
+
+    <hr>
+    <body class="view-services-page">
+    <h2>Services Added by {{ guide.guide_first_name }}:</h2>
+    <!-- Use the new service-list class for styling -->
+    {% if services %}
+    {% for service in services %}
+    <div class="service-card" onclick="redirectToServiceView('{{ service.service_id }}')">
+            {% if service.images %}
+                <img class="view-services-page" src="{{ service.images.url }}" alt="Service Image">
+            {% endif %}
+            <div class="service-details">
+                <strong class="view-services-page">{{ service.service_name }}</strong>
+                <p class="view-service-page"> {{ service.service_type }}</p>
+                <p class="view-service-page"> {{ service.duration }} minutes</p>
+                <p class="view-service-page">Place: {{ service.place }}</p>
+                <p class="view-service-page">City: {{ service.city }}</p>
+                <p class="view-service-page">State: {{ service.state }}</p>
+                <p class="view-service-page">₹ {{ service.price_per_person }}</p>
+                
+            </div>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>No services added by {{ guide.guide_first_name }} yet.</p>
+{% endif %}
+
+<script>
+    function redirectToServiceView(serviceId) {
+        window.location.href = `/guest_service_view/${serviceId}/`;
+    }
+</script>
+<script>
+    function redirectToServiceView(serviceId) {
+      // Use the serviceId parameter to construct the URL
+      var url = '/guest_service_view/' + serviceId + '/';
+      // Redirect to the constructed URL
+      window.location.href = url;
+    }
+  </script>
+
+    <button onclick="window.location.href='{% url 'guide_display' %}'" class="back-button">Back</button>
+</div>
+</body>
+{% endblock %}
